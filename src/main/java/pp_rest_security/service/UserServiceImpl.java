@@ -3,7 +3,6 @@ package pp_rest_security.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import pp_rest_security.model.User;
 import pp_rest_security.repository.UserRepository;
 
@@ -37,7 +36,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User userFromDb = userRepository.findByEmail(user.getEmail());
@@ -48,7 +46,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void editUser(User user) {
         if (!user.getPassword().equals(userRepository.getById(user.getId()).getPassword())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -57,7 +54,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void deleteById(long id) {
         userRepository.deleteById(id);
     }
