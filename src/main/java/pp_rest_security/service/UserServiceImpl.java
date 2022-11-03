@@ -21,41 +21,40 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(long id) {
-        return userRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("Invalid user Id:" + id));
-    }
-
-    @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.getUserById(id);
     }
 
     @Override
     public List<User> getUsers() {
-        return userRepository.findAll();
+        return userRepository.getAllUsers();
     }
 
     @Override
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User userFromDb = userRepository.findByEmail(user.getEmail());
+        User userFromDb = userRepository.findUserByEmail(user.getEmail());
         if(userFromDb != null) {
             throw new RuntimeException("такой пользователь уже есть");
         }
-        userRepository.save(user);
+        userRepository.saveUser(user);
     }
 
     @Override
     public void editUser(User user) {
-        if (!user.getPassword().equals(userRepository.getById(user.getId()).getPassword())) {
+        if (!user.getPassword().equals(userRepository.getUserById(user.getId()).getPassword())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        userRepository.save(user);
+        userRepository.saveUser(user);
     }
 
     @Override
     public void deleteById(long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
 
 }

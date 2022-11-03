@@ -19,12 +19,18 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Set<Role> findRoles(List<Long> roles) {
-        return roleRepository.findRoles(roles);
+    public Set<Role> getRoleById(Long id) {
+        return (Set<Role>) roleRepository.getById(id);
     }
 
     @Override
     public List<Role> getAllRoles() {
         return roleRepository.getRoles();
     }
+
+    @Override
+    public void addRole(Role role) {
+        roleRepository.save(role);
+    }
+
 }

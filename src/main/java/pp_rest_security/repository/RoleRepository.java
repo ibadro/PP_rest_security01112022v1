@@ -11,8 +11,11 @@ import java.util.Set;
 public interface RoleRepository {
 
     Set<Role> findRoles(List<Long> roles);
-
+    Set<Role> getByName(String name);
     List<Role> getRoles();
 
+    void save(Role role);
+
+    Set<Role> getById(Long id);
 }
 
