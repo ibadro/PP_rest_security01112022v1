@@ -3,8 +3,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pp_rest_security.model.Role;
 
+import java.util.List;
+import java.util.Set;
+
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role,Long> {
-    Role findByName(String name);
+public interface RoleRepository {
+
+    Set<Role> findRoles(List<Long> roles);
+
+    List<Role> getRoles();
+
 }
+

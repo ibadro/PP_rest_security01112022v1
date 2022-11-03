@@ -59,7 +59,7 @@ public class AdminRestController {
 
     @GetMapping("/roles")
     public ResponseEntity<List<Role>> getAllRoles() {
-        return new ResponseEntity<>(roleService.getRoles(), HttpStatus.OK);
+        return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
     }
 
 }
