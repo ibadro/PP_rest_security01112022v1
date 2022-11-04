@@ -6,7 +6,6 @@ import pp_rest_security.model.Role;
 import pp_rest_security.repository.RoleRepository;
 
 import java.util.List;
-import java.util.Set;
 
 
 @Service
@@ -19,18 +18,18 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Set<Role> getRoleById(Long id) {
-        return (Set<Role>) roleRepository.getById(id);
-    }
-
-    @Override
-    public List<Role> getAllRoles() {
-        return roleRepository.getRoles();
+    public List<Role> getListRoles() {
+        return roleRepository.getListRoles();
     }
 
     @Override
     public void addRole(Role role) {
-        roleRepository.save(role);
+        roleRepository.addRole(role);
+    }
+
+    @Override
+    public Role getRoleByName(String role) {
+        return roleRepository.getRoleByName(role);
     }
 
 }

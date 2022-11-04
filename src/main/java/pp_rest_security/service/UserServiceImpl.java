@@ -1,8 +1,11 @@
 package pp_rest_security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pp_rest_security.model.User;
 import pp_rest_security.repository.UserRepository;
 
@@ -20,41 +23,44 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserById(long id) {
+    public List<User> getListUsers() {
+        return userRepository.getListUsers();
+    }
+
+    @Override
+    public User getUserById(long id) {
         return userRepository.getUserById(id);
     }
 
     @Override
-    public List<User> getUsers() {
-        return userRepository.getAllUsers();
+    public User getUserByEmail(String email) {
+        return userRepository.getUserByEmail(email);
     }
 
     @Override
-    public void saveUser(User user) {
+    public void addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User userFromDb = userRepository.findUserByEmail(user.getEmail());
-        if(userFromDb != null) {
-            throw new RuntimeException("такой пользователь уже есть");
+        userRepository.addUser(user);
+    }
+
+    @Override
+    public void updateUser(User newUser) {
+        if (newUser.getPassword().equals("")) {
+            newUser.setPassword(userRepository.getUserById(newUser.getId()).getPassword());
+        } else {
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         }
-        userRepository.saveUser(user);
+        userRepository.updateUser(newUser);
+    }
+
+    @Transactional
+    @Override
+    public void deleteUser(long id) {
+        userRepository.deleteUser(id);
     }
 
     @Override
-    public void editUser(User user) {
-        if (!user.getPassword().equals(userRepository.getUserById(user.getId()).getPassword())) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
-        userRepository.saveUser(user);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.getUserByEmail(email);
     }
-
-    @Override
-    public void deleteById(long id) {
-        userRepository.deleteById(id);
-    }
-
-    @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
-    }
-
 }

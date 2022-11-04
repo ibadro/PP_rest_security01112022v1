@@ -4,18 +4,11 @@ import org.springframework.stereotype.Repository;
 import pp_rest_security.model.Role;
 
 import java.util.List;
-import java.util.Set;
 
 
-@Repository
+
 public interface RoleRepository {
-
-    Set<Role> findRoles(List<Long> roles);
-    Set<Role> getByName(String name);
-    List<Role> getRoles();
-
-    void save(Role role);
-
-    Set<Role> getById(Long id);
+    List<Role> getListRoles();
+    void addRole(Role role);
+    Role getRoleByName(String role);
 }
-

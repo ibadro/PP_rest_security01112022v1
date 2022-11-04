@@ -25,7 +25,7 @@ public class AdminRestController {
 
     @GetMapping("/admin")
     public ResponseEntity<List<User>> getAllUsers() {
-        final List<User> users = userService.getUsers();
+        final List<User> users = userService.getListUsers();
         return users != null && !users.isEmpty()
                 ? new ResponseEntity<>(users, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -33,7 +33,7 @@ public class AdminRestController {
 
     @GetMapping("/admin/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") long id) {
-        final User user = userService.findUserById(id);
+        final User user = userService.getUserById(id);
         return user != null
                 ? new ResponseEntity<>(user, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -41,25 +41,25 @@ public class AdminRestController {
 
     @PostMapping("/admin")
     public ResponseEntity<User> newUser(@RequestBody User user) {
-        userService.saveUser(user);
+        userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PatchMapping("/admin/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
-        userService.editUser(user);
+        userService.updateUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/admin/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
-        userService.deleteById(id);
+        userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/roles")
     public ResponseEntity<List<Role>> getAllRoles() {
-        return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
+        return new ResponseEntity<>(roleService.getListRoles(), HttpStatus.OK);
     }
 
 }

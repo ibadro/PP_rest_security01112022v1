@@ -1,48 +1,57 @@
 package pp_rest_security.repository;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import pp_rest_security.model.User;
+import pp_rest_security.service.RoleService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
+
 @Repository
-@Transactional
-public class UserRepositoryImpl implements UserRepository{
+public class UserRepositoryImpl implements UserRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    private RoleService roleService;
+
+    public UserRepositoryImpl(RoleService roleService) {
+        this.roleService = roleService;
+    }
+
     @Override
-    public List<User> getAllUsers() {
-        return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
+    public List<User> getListUsers() {
+        return entityManager.createQuery("select u from User u", User.class).getResultList();
     }
 
     @Override
     public User getUserById(long id) {
-        return entityManager.find(User.class, id);
+        return entityManager.createQuery("select u from User u where u.id = :id", User.class)
+                .setParameter("id", id).getSingleResult();
     }
 
     @Override
-    public void create(User user) {
+    public User getUserByEmail(String email) {
+        return entityManager.createQuery("select u from User u where u.email = :email", User.class)
+                .setParameter("email", email).getSingleResult();
+    }
+
+    @Transactional
+    @Override
+    public void addUser(User user) {
         entityManager.persist(user);
     }
 
+    @Transactional
     @Override
-    public void saveUser(User user) {
-        entityManager.persist(user);
+    public void updateUser(User newUser) {
+        entityManager.merge(newUser);
     }
 
+    @Transactional
     @Override
-    public void deleteById(long id) {
-        String JPAql = "DELETE FROM User user WHERE user.id = :id";
-        entityManager.createQuery(JPAql).setParameter("id", id).executeUpdate();
-    }
-
-    @Override
-    public User findUserByEmail(String email) {
-        String JPAql ="SELECT u from User u join fetch u.roles where u.email = :email";
-        return entityManager.createQuery(JPAql, User.class).setParameter("email", email).getSingleResult();
+    public void deleteUser(long id) {
+        entityManager.remove(getUserById(id));
     }
 }
