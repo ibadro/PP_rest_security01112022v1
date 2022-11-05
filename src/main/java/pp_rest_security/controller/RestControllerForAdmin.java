@@ -13,17 +13,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class AdminRestController {
+public class RestControllerForAdmin {
     private final UserService userService;
     private final RoleService roleService;
 
     @Autowired
-    public AdminRestController(UserService userService, RoleService roleService) {
+    public RestControllerForAdmin(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
 
-    @GetMapping("/admin")
+    @GetMapping("/getAllUsers")
     public ResponseEntity<List<User>> getAllUsers() {
         final List<User> users = userService.getListUsers();
         return users != null && !users.isEmpty()
@@ -39,7 +39,7 @@ public class AdminRestController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/admin")
+    @PostMapping("/newUser")
     public ResponseEntity<User> newUser(@RequestBody User user) {
         userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);

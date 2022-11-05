@@ -11,7 +11,7 @@ import pp_rest_security.model.User;
 
 @RestController
 @RequestMapping("/api/user")
-public class UserRestController {
+public class RestControllerForUser {
 
     @GetMapping()
     public ResponseEntity<User> getUser(Authentication auth) {
