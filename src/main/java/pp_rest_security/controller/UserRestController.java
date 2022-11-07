@@ -13,12 +13,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class RestControllerForAdmin {
+public class UserRestController {
     private final UserService userService;
     private final RoleService roleService;
 
     @Autowired
-    public RestControllerForAdmin(UserService userService, RoleService roleService) {
+    public UserRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
@@ -31,7 +31,7 @@ public class RestControllerForAdmin {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/admin/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") long id) {
         final User user = userService.getUserById(id);
         return user != null
@@ -45,13 +45,13 @@ public class RestControllerForAdmin {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PatchMapping("/admin/{id}")
+    @PatchMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         userService.updateUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
