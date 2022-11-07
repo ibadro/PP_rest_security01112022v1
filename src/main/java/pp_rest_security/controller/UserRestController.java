@@ -23,7 +23,7 @@ public class UserRestController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/getAllUsers")
+    @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
         final List<User> users = userService.getListUsers();
         return users != null && !users.isEmpty()
@@ -39,7 +39,7 @@ public class UserRestController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/newUser")
+    @PostMapping("/users")
     public ResponseEntity<User> newUser(@RequestBody User user) {
         userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);

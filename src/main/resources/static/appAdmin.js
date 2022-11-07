@@ -31,7 +31,7 @@ async function thisUser() {
 
 async function allUsers() {
     table.empty()
-    fetch("http://localhost:8080/api/getAllUsers")
+    fetch("http://localhost:8080/api/users")
         .then(res => res.json())
         .then(data => {
             data.forEach(user => {
@@ -82,7 +82,7 @@ async function newUser() {
                 name : form.roles.options[i].name
             })
         }
-        fetch("http://localhost:8080/api/newUser", {
+        fetch("http://localhost:8080/api/users", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
